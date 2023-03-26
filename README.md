@@ -16,5 +16,5 @@
    7@@@@P~.....7BYYGBG5JJJ5755GBP! .    .P%^      
    !@@@@Y:      7&&BBGPPGG!:7B5GJ :?J~:   G%^           GitHub stats:
    ?@@@@@&J      !!????J5YY7..:   ^&@@&&Y 7@&JYJ7^      ————————————
-   7@@@@@@@5~         :JJ~.  ..  .G@@@@57J&@@@@@@@      Repos: 15 | Commits: 159 | Stars: 2 
-   !@@@&@@@@&Y!~^:.         .:  .G@@@@@!@@@@@@@@@@      Lines of code written: 159 
+   7@@@@@@@5~         :JJ~.  ..  .G@@@@57J&@@@@@@@      Repos: 15 | Stars: 2 
+   !@@@&@@@@&Y!~^:.         .:  .G@@@@@!@@@@@@@@@@      Commits: 159 

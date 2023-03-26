@@ -73,21 +73,19 @@ def getGitStats(token):
     data = response.json()['data']['viewer']['repositories']['edges']
     repo_count = len(data)
     star_count = sum([data[i]['node']['stargazers']['totalCount'] for i in range(repo_count)])
-    code_count = sum([data[i]['node']['object']['history']['totalCount'] for i in range(repo_count) if
-                      data[i]['node']['object'] is not None])
     commit_count = sum([data[i]['node']['object']['history']['totalCount'] for i in range(repo_count) if
                         data[i]['node']['object'] is not None])
 
-    return repo_count, star_count, code_count, commit_count
+    return repo_count, star_count, commit_count
 
 
 def readmeoverwrite():
-    repo_count, star_count, code_count, commit_count = getGitStats(token)
+    repo_count, star_count, commit_count = getGitStats(token)
     with open("README.md", "r") as file:
         data = file.readlines()
         line4 = ('                 P@@@@@@@@@@@@@@G.                      uptime: ', updateUptime(), "\n")
-        line19 = ('   7@@@@@@@5~         :JJ~.  ..  .G@@@@57J&@@@@@@@      Repos: {} | Commits: {} | Stars: {} \n'.format(repo_count, commit_count, star_count))
-        line20 = ('   !@@@&@@@@&Y!~^:.         .:  .G@@@@@!@@@@@@@@@@      Lines of code written: {} \n'.format(code_count))
+        line19 = ('   7@@@@@@@5~         :JJ~.  ..  .G@@@@57J&@@@@@@@      Repos: {} | Stars: {} \n'.format(repo_count, star_count))
+        line20 = ('   !@@@&@@@@&Y!~^:.         .:  .G@@@@@!@@@@@@@@@@      Commits: {} \n'.format(commit_count))
 
     tup2str4 = converttuple(line4)
     tup2str19 = converttuple(line19)
