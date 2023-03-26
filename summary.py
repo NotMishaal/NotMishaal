@@ -41,36 +41,22 @@ def converttuple(tup):
 
 
 def getGitStats(token):
-    headers = {'Authorization': f'token {token}'}
+    headers = {"Authorization": f"Bearer {token}"}
     query = """
-    query {
-      viewer {
-        repositories {
-          totalCount
-          edges {
-            node {
-              stargazers {
-                totalCount
-              }
-              languages {
-                edges {
-                  node {
-                    name
-                  }
-                }
-              }
-              object(expression: "master") {
-                ... on Commit {
-                  history {
+        query {
+          viewer {
+            repositories(first: 100) {
+              totalCount
+              edges {
+                node {
+                  stargazers {
                     totalCount
                   }
-                }
-              }
-              ref(qualifiedName: "master") {
-                target {
-                  ... on Commit {
-                    history {
-                      totalCount
+                  object(expression: "master") {
+                    ... on Commit {
+                      history {
+                        totalCount
+                      }
                     }
                   }
                 }
@@ -78,15 +64,20 @@ def getGitStats(token):
             }
           }
         }
-      }
-    }
     """
     response = requests.post('https://api.github.com/graphql', json={'query': query}, headers=headers)
+
+    if response.status_code != 200:
+        raise Exception(f"GraphQL query failed with status code {response.status_code}. Response: {response.text}")
+
     data = response.json()['data']['viewer']['repositories']['edges']
     repo_count = len(data)
-    star_count = sum([d['node']['stargazers']['totalCount'] for d in data])
-    code_count = sum([d['node']['object']['history']['totalCount'] for d in data])
-    commit_count = sum([d['node']['ref']['target']['history']['totalCount'] for d in data])
+    star_count = sum([data[i]['node']['stargazers']['totalCount'] for i in range(repo_count)])
+    code_count = sum([data[i]['node']['object']['history']['totalCount'] for i in range(repo_count) if
+                      data[i]['node']['object'] is not None])
+    commit_count = sum([data[i]['node']['object']['history']['totalCount'] for i in range(repo_count) if
+                        data[i]['node']['object'] is not None])
+
     return repo_count, star_count, code_count, commit_count
 
 
@@ -96,7 +87,7 @@ def readmeoverwrite():
         data = file.readlines()
         line4 = ('                 P@@@@@@@@@@@@@@G.                      uptime: ', updateUptime(), "\n")
         line19 = ('   7@@@@@@@5~         :JJ~.  ..  .G@@@@57J&@@@@@@@      Repos: {} | Commits: {} | Stars: {} \n'.format(repo_count, commit_count, star_count))
-        line20 = ('   !@@@&@@@@&Y!~^:.         .:  .G@@@@@!@@@@@@@@@@      Lines of code written: {}'.format(code_count))
+        line20 = ('   !@@@&@@@@&Y!~^:.         .:  .G@@@@@!@@@@@@@@@@      Lines of code written: {} \n'.format(code_count))
 
     tup2str4 = converttuple(line4)
     tup2str19 = converttuple(line19)
