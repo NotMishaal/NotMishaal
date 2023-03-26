@@ -1,7 +1,7 @@
 ```python
-                    ~?JJ??!^:.                          mishaal.rifath           
+                    ~?JJ??!^:.                          mishaal.rifath
                   ?B@@@@@@@@&#P!.                       ————————————
-                 P@@@@@@@@@@@@@@G.                      uptime: 20 years
+                 P@@@@@@@@@@@@@@G.                      uptime: 20 years, 7 months, 26 days"
                 ?@@@@@@@@@#BPB@@&^                      host: Informatics Institute of Technology | Robert Gordon University
                 Y@&GG5B@5^!YPB&&?                       kernel: Artificial Intelligence & Data Science
                 ^@@Y5!.?. .J&&5~                        
@@ -18,5 +18,4 @@
    ?@@@@@&J      !!????J5YY7..:   ^#@@&#Y 7@#JYJ7^      ————————————
    7@@@@@@@5~         :JJ~.  ..  .G@@@@57J#@@@@@@@      Repos: x | Commits: y | Stars: z
    !@@@&@@@@&Y!~^:.         .:  .G@@@@@#@@@@@@@@@@      Lines of code written: i
-    5@#GPB&&@@@@@#BBGP5?~.      5@@@@@@@@@@@@@@@@@       
 ```
