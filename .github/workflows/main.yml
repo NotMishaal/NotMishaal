@@ -2,16 +2,27 @@ name: Daily Python Script
 
 on:
   schedule:
-    - cron: '0 0 * * *' # runs everyday at midnight UTC
+    - cron: "0 0 * * *" # runs everyday at midnight UTC
 
 jobs:
   build:
     runs-on: ubuntu-latest
     steps:
-    - uses: actions/checkout@v2
-    - name: Set up Python
-      uses: actions/setup-python@v2
-      with:
-        python-version: '3.10'
-    - name: Run Python script
-      run: summary.py
+      - uses: actions/checkout@v2
+      - name: Set up Python
+        uses: actions/setup-python@v2
+        with:
+          python-version: "3.10"
+      - name: Run Python script
+        env:
+          ACCESS_TOKEN: ${{ secrets.ACCESS_TOKEN }}
+          USER_NAME: ${{ secrets.USER_NAME }}
+        run: python summary.py
+      - name: Commit
+        run: |-
+          git add .
+          git diff
+          git config --global user.email "github-actions-bot@notmishaal.github.io"
+          git config --global user.name "NotMishaal/GitHub-Actions-Bot"
+          git commit -m "Daily README Update" -a || echo "No changes to commit"
+          git push
