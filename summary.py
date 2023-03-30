@@ -1,7 +1,9 @@
 from datetime import datetime
 from dateutil import relativedelta
 import requests
-from config import token
+import os
+
+token = os.environ['ACCESS_TOKEN']
 
 birthDate = datetime(2002, 7, 28)
 now = datetime.today()
