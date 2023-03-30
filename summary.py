@@ -42,7 +42,7 @@ def converttuple(tup):
     return con
 
 
-def getGitStats(token):
+def getGitStats(token, url):
     headers = {'Authorization': 'Bearer '+token}
     query = """
         query {
@@ -74,12 +74,11 @@ def getGitStats(token):
         }
     """
 
+
+    headers = {'Authorization': 'Bearer '+token}
     response = requests.post(url, json={'query': query}, headers=headers)
 
-    if response.status_code != 200:
-        raise ValueError(f'Request failed: {response.content}')
-
-    data = response.json().get('data', {}).get('viewer', {}).get('repositories', {}).get('edges', [])
+    data = response.json()['data']['viewer']['repositories']['edges']
 
     repo_count = sum(1 for _ in data)
     star_count = sum(edge['node']['stargazers']['totalCount'] for edge in data)
@@ -90,23 +89,26 @@ def getGitStats(token):
 
 
 
+
 def readmeoverwrite():
-    repo_count, star_count, commit_count = getGitStats(token)
-    with open("README.md", "r") as file:
-        data = file.readlines()
-        line4 = ('                 P@@@@@@@@@@@@@@G.                      uptime: ', updateUptime(), "\n")
-        line19 = ('   7@@@@@@@5~         :JJ~.  ..  .G@@@@57J&@@@@@@@      Repos: {} | Stars: {} \n'.format(repo_count, star_count))
-        line20 = ('   !@@@&@@@@&Y!~^:.         .:  .G@@@@@!@@@@@@@@@@      Commits: {} \n'.format(commit_count))
+  url = 'https://api.github.com/graphql'
+  repo_count, star_count, commit_count = getGitStats(token, url)
 
-    tup2str4 = converttuple(line4)
-    tup2str19 = converttuple(line19)
-    tup2str20 = converttuple(line20)
-    data[3] = tup2str4
-    data[18] = tup2str19
-    data[19] = tup2str20
+  with open("README.md", "r") as file:
+      data = file.readlines()
+      line4 = ('                 P@@@@@@@@@@@@@@G.                      uptime: ', updateUptime(), "\n")
+      line19 = ('   7@@@@@@@5~         :JJ~.  ..  .G@@@@57J&@@@@@@@      Repos: {} | Stars: {} \n'.format(repo_count, star_count))
+      line20 = ('   !@@@&@@@@&Y!~^:.         .:  .G@@@@@!@@@@@@@@@@      Commits: {} \n'.format(commit_count))
 
-    with open('README.md', 'w') as file:
-        file.writelines(data)
+  tup2str4 = converttuple(line4)
+  tup2str19 = converttuple(line19)
+  tup2str20 = converttuple(line20)
+  data[3] = tup2str4
+  data[18] = tup2str19
+  data[19] = tup2str20
+
+  with open('README.md', 'w') as file:
+      file.writelines(data)
 
 
 if __name__ == '__main__':
