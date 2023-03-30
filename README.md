@@ -1,7 +1,7 @@
 ```python
                     ~?JJ??!^:.                          mishaal.rifath
                   ?B@@@@@@@@&AP!.                       ————————————
-                 P@@@@@@@@@@@@@@G.                      uptime: 20 years, 7 months, 26 days
+                 P@@@@@@@@@@@@@@G.                      uptime: 20 years, 8 months, 2 days
                 ?@@@@@@@@@XBPB@@&^                      host: Informatics Institute of Technology | Robert Gordon University
                 Y@&GG5B@5^!YPB&&?                       kernel: Artificial Intelligence & Data Science
                 ^@@Y5!.?. .J&&5~                        
