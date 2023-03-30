@@ -47,17 +47,23 @@ def getGitStats(token):
     query = """
         query {
           viewer {
-            repositories(first: 100) {
+            repositories(first: 1000, isFork: false) {
               totalCount
               edges {
                 node {
                   stargazers {
                     totalCount
                   }
-                  object(expression: "master") {
-                    ... on Commit {
-                      history {
-                        totalCount
+                  refs(refPrefix: "refs/heads/", first: 100) {
+                    totalCount
+                    nodes {
+                      name
+                      target {
+                        ... on Commit {
+                          history {
+                            totalCount
+                          }
+                        }
                       }
                     }
                   }
@@ -75,10 +81,13 @@ def getGitStats(token):
     data = response.json()['data']['viewer']['repositories']['edges']
     repo_count = len(data)
     star_count = sum([data[i]['node']['stargazers']['totalCount'] for i in range(repo_count)])
-    commit_count = sum([data[i]['node']['object']['history']['totalCount'] for i in range(repo_count) if
-                        data[i]['node']['object'] is not None])
+    commit_count = sum([data[i]['node']['refs']['nodes'][j]['target']['history']['totalCount'] for i in range(repo_count)
+                        for j in range(len(data[i]['node']['refs']['nodes']))
+                        if data[i]['node']['refs']['nodes'][j]['name'] == "master" and
+                        data[i]['node']['refs']['nodes'][j]['target'] is not None])
 
     return repo_count, star_count, commit_count
+
 
 
 def readmeoverwrite():
