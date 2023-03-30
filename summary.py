@@ -43,7 +43,7 @@ def converttuple(tup):
 
 
 def getGitStats(token):
-    headers = {"Authorization": f"Bearer {token}"}
+    headers = {'Authorization': 'Bearer '+token}
     query = """
         query {
           viewer {
@@ -73,20 +73,20 @@ def getGitStats(token):
           }
         }
     """
-    response = requests.post('https://api.github.com/graphql', json={'query': query}, headers=headers)
+
+    response = requests.post(url, json={'query': query}, headers=headers)
 
     if response.status_code != 200:
-        raise Exception(f"GraphQL query failed with status code {response.status_code}. Response: {response.text}")
+        raise ValueError(f'Request failed: {response.content}')
 
-    data = response.json()['data']['viewer']['repositories']['edges']
-    repo_count = len(data)
-    star_count = sum([data[i]['node']['stargazers']['totalCount'] for i in range(repo_count)])
-    commit_count = sum([data[i]['node']['refs']['nodes'][j]['target']['history']['totalCount'] for i in range(repo_count)
-                        for j in range(len(data[i]['node']['refs']['nodes']))
-                        if data[i]['node']['refs']['nodes'][j]['name'] == "master" and
-                        data[i]['node']['refs']['nodes'][j]['target'] is not None])
+    data = response.json().get('data', {}).get('viewer', {}).get('repositories', {}).get('edges', [])
+
+    repo_count = sum(1 for _ in data)
+    star_count = sum(edge['node']['stargazers']['totalCount'] for edge in data)
+    commit_count = sum(edge['node']['defaultBranchRef']['target']['history']['totalCount'] for edge in data)
 
     return repo_count, star_count, commit_count
+
 
 
 
