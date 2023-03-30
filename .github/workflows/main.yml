@@ -1,6 +1,9 @@
 name: Daily Python Script
 
 on:
+  push:
+    branches:
+      - main
   schedule:
     - cron: "0 0 * * *" # runs everyday at midnight UTC
 
@@ -14,7 +17,7 @@ jobs:
         with:
           python-version: "3.10"
       - name: Install Libraries
-        run: python -m pip install -r requirements.txt 
+        run: python -m pip install -r requirements.txt
       - name: Run Python script
         env:
           ACCESS_TOKEN: ${{ secrets.ACCESS_TOKEN }}
